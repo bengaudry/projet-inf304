@@ -1,0 +1,5 @@
+*.o
+main
+curiosity-test[0-9]
+curiosity-test
+Tests_TP7.tar.gz
