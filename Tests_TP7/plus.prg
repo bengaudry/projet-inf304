@@ -1,0 +1,1 @@
+DDAGA 2 6 + M { A } { GGA } ?
