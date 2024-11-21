@@ -6,6 +6,13 @@
 #include "interprete.h"
 #include "programme.h"
 
+
+// Couleurs pour l'affichage
+char rouge[] = "\033[0;31m";
+char normal[] = "\033[00m";
+char jaune[] = "\033[0;33m";
+char vert[] = "\033[0;32m";
+
 void affiche_etat_inter(resultat_inter r) {
     switch (r)
     {
@@ -25,38 +32,30 @@ void affiche_etat_inter(resultat_inter r) {
         printf("CRASH ROBOT\n");
         break;
     case ERREUR_PILE_VIDE:
-        printf("ERREUR_PILE_VIDE\n");
+        printf("ERREUR PILE VIDE\n");
         break;
     case ERREUR_ADRESSAGE:
-        printf("ERREUR_ADRESSAGE\n");
+        printf("ERREUR ADRESSAGE\n");
         break;
     case ERREUR_DIVISION_PAR_ZERO:
-        printf("ERREUR_DIVISION_PAR_ZERO\n");
+        printf("ERREUR DIVISION PAR ZERO\n");
         break;
     }
 }
 
-void print_fail(char msg[], char nom_terrain[])
+void affiche_erreur(char msg[], char nom_terrain[])
 {
-    fprintf(stderr, " \033[0;31m[-]\033[00m \033[0;33m%s\033[00m\n%s\n", nom_terrain, msg);
+    fprintf(stderr, " %s[-] %s%s%s\n%s\n", rouge, jaune, nom_terrain, normal, msg);
 }
 
-char orientation_to_char(Orientation o)
+char orientation_vers_char(Orientation o)
 {
     switch (o)
     {
-    case Est:
-        return 'E';
-        break;
-    case Ouest:
-        return 'O';
-        break;
-    case Nord:
-        return 'N';
-        break;
-    case Sud:
-        return 'S';
-        break;
+        case Est: return 'E';
+        case Ouest: return 'O';
+        case Nord: return 'N';
+        case Sud: return 'S';
     }
 }
 
@@ -82,9 +81,9 @@ int main(int argc, char **argv)
     char orientation_finale = '\0';
 
     // Si on utilise l'option '-q', on attend deux arguments, sinon 1
-    if ((argv[1][0] == '-' && argc < 3) || argc < 2)
+    if (argc < 2 || (argv[1][0] == '-' && argc < 3))
     {
-        fprintf(stderr, "Utilisation : %s <nom_test>\n", argv[0]);
+        fprintf(stderr, "Utilisation : %s [opt: -q (quiet)] <nom_test>\n", argv[0]);
         return 1;
     }
 
@@ -118,7 +117,6 @@ int main(int argc, char **argv)
     }
 
     fclose(f);
-    // printf("%s, %s, %d, %c, %d, %d, %c\n", chemin_fichier_terrain, chemin_fichier_prog, nb_pas_exec_max, evenement_attendu_fin, x_final, y_final, orientation_finale);
 
     /* Initialisation de l'environnement : lecture du terrain,
        initialisation de la position du robot */
@@ -176,13 +174,13 @@ int main(int argc, char **argv)
 
     if (pas > nb_pas_exec_max)
     {
-        print_fail("Le nombre de pas d'éxécution maximum à été atteint", nom_test);
+        affiche_erreur("Le nombre de pas d'éxécution maximum à été atteint", nom_test);
         return 1;
     }
 
     if (evenement_fin != evenement_attendu_fin)
     {
-        print_fail("Les évènements d'arrivée ne correspondent pas", nom_test);
+        affiche_erreur("Les évènements d'arrivée ne correspondent pas", nom_test);
         fprintf(stderr, "Attendu : %c, Obtenu : %c\n", evenement_attendu_fin, evenement_fin);
         return 1;
     }
@@ -190,19 +188,19 @@ int main(int argc, char **argv)
     {
         if (x_final != envt.r.x || y_final != envt.r.y)
         {
-            print_fail("La position d'arrivée du robot ne correspond pas", nom_test);
+            affiche_erreur("La position d'arrivée du robot ne correspond pas", nom_test);
             fprintf(stderr, "Attendu : (%d, %d), Obtenu : (%d, %d)\n", x_final, y_final, envt.r.x, envt.r.y);
             return 1;
         }
 
-        if (orientation_finale != orientation_to_char(envt.r.o))
+        if (orientation_finale != orientation_vers_char(envt.r.o))
         {
-            print_fail("L'orientation d'arrivée du robot ne correspond pas", nom_test);
-            fprintf(stderr, "Attendu : %c, Obtenu : %c\n", orientation_finale, orientation_to_char(envt.r.o));
+            affiche_erreur("L'orientation d'arrivée du robot ne correspond pas", nom_test);
+            fprintf(stderr, "Attendu : %c, Obtenu : %c\n", orientation_finale, orientation_vers_char(envt.r.o));
             return 1;
         }
     }
-    printf(" \033[0;32m[+]\033[00m \033[0;33m%s\033[00m\n", nom_test);
+    printf(" %s[+] %s%s%s\n", vert, jaune, nom_test, normal);
 
     return 0;
 }
