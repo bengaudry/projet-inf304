@@ -43,13 +43,8 @@ int main(int argc, char **argv) {
 
   afficher_infos_robot(&r);
 
-  printf("Entrer une action ([a]vancer, [g]auche, [d]roite, [f]in : ");
-  scanf(" %c", &c);
-  while (c != 'f') {
-
-    /* À compléter */
-
+  do {
     printf("Entrer une action ([a]vancer, [g]auche, [d]roite, [f]in : ");
     scanf(" %c", &c);
-  }
+  } while (c != 'f');
 }

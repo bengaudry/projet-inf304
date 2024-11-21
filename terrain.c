@@ -4,42 +4,42 @@
 #include <stdio.h>
 #include <string.h>
 
-void gestion_erreur_terrain(erreur_terrain e)
+int gestion_erreur_terrain(erreur_terrain e)
 {
   switch (e)
   {
   case OK:
-    break;
+    return 0;
   case ERREUR_FICHIER:
     fprintf(stderr, "ERREUR FICHIER\n");
-    break;
+    return 1;
   case ERREUR_LECTURE_LARGEUR:
     fprintf(stderr, "ERREUR LECTURE LARGEUR\n");
-    break;
+    return 1;
   case ERREUR_LARGEUR_INCORRECTE:
     fprintf(stderr, "ERREUR LARGEUR INCORRECTE\n");
-    break;
+    return 1;
   case ERREUR_LECTURE_HAUTEUR:
     fprintf(stderr, "ERREUR LECTURE HAUTEUR\n");
-    break;
+    return 1;
   case ERREUR_HAUTEUR_INCORRECTE:
     fprintf(stderr, "ERREUR HAUTEUR INCORRECTE\n");
-    break;
+    return 1;
   case ERREUR_LIGNES_MANQUANTES:
     fprintf(stderr, "ERREUR LIGNES MANQUANTES\n");
-    break;
+    return 1;
   case ERREUR_LIGNE_TROP_LONGUE:
     fprintf(stderr, "ERREUR LIGNE TROP COURTE\n");
-    break;
+    return 1;
   case ERREUR_LIGNE_TROP_COURTE:
     fprintf(stderr, "ERREUR LIGNE TROP COURTE\n");
-    break;
+    return 1;
   case ERREUR_POSITION_ROBOT_MANQUANTE:
     fprintf(stderr, "ERREUR POSITION ROBOT MANQUANTE\n");
-    break;
+    return 1;
   case ERREUR_CARACTERE_INCORRECT:
     fprintf(stderr, "ERREUR CARACTERE INCORRECT\n");
-    break;
+    return 1;
   }
 }
 
@@ -48,14 +48,9 @@ char convertir_type_case_char(Case case_parcourue)
 {
   switch (case_parcourue)
   {
-  case LIBRE:
-    return '.';
-
-  case EAU:
-    return '~';
-
-  case ROCHER:
-    return '#';
+    case LIBRE: return '.';
+    case EAU: return '~';
+    case ROCHER: return '#';
   }
 }
 
@@ -199,13 +194,9 @@ void ecrire_terrain(FILE *f, Terrain *t, int x, int y)
     for (j = 0; j < l; j++)
     {
       if (x == j && y == i)
-      {
         fprintf(f, "C");
-      }
       else
-      {
         fprintf(f, "%c", convertir_type_case_char(t->tab[j][i]));
-      }
     }
     fprintf(f, "\n");
   }

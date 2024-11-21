@@ -1,10 +1,13 @@
 #include "observateur.h"
 #include <stdbool.h>
 
-/** Retourne l'état initial de l'automate */
+////// OBSERVATEUR 1 //////
+// Observateur vérifiant que l'on effectue une mesure avant d'avancer
+
+/* Retourne l'état initial de l'automate */
 Obs1Etat etat_initial_obs1(void) { return Init; }
 
-/** Retourne l'état correspondant à la transition depuis un autre état */
+/* Retourne l'état correspondant à la transition depuis un autre état */
 Obs1Etat transition_obs1(Obs1Etat e, Alphabet c)
 {
     switch (e)
@@ -12,24 +15,16 @@ Obs1Etat transition_obs1(Obs1Etat e, Alphabet c)
     case Init:
         switch (c)
         {
-        case A:
-            return Err;
-        case G:
-        case D:
-            return Init;
-        case M:
-            return Mes;
+            case A: return Err;
+            case G: case D: return Init;
+            case M: return Mes;
         }
         break;
     case Mes:
         switch (c)
         {
-        case A:
-        case G:
-        case D:
-            return Init;
-        case M:
-            return Mes;
+            case A: case G: case D: return Init;
+            case M:  return Mes;
         }
         break;
     case Err:
@@ -45,11 +40,12 @@ bool obs1_est_final(Obs1Etat e)
 
 
 ////// OBSERVATEUR 2 //////
+// Observateur vérifiant que l'on ne tourne pas en rond
 
-/** Retourne l'état initial de l'automate */
+/* Retourne l'état initial de l'automate */
 Obs2Etat etat_initial_obs2(void) { return D0; }
 
-/** Retourne l'état correspondant à la transition depuis un autre état */
+/* Retourne l'état correspondant à la transition depuis un autre état */
 Obs2Etat transition_obs2(Obs2Etat e, Alphabet c)
 {
     switch (c)
@@ -77,7 +73,7 @@ Obs2Etat transition_obs2(Obs2Etat e, Alphabet c)
     }
 }
 
-/** Retourne vrai si Etat != Err */
+/* Retourne vrai si Etat != Err */
 bool obs2_est_final(Obs2Etat e)
 {
     return e != DErr;

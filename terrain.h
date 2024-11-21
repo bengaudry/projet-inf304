@@ -36,8 +36,8 @@ typedef enum
    ERREUR_CARACTERE_INCORRECT
 } erreur_terrain;
 
-/* Affiche une erreur de terrain */
-void gestion_erreur_terrain(erreur_terrain e);
+/* Affiche une erreur de terrain, et renvoie 0 si OK, sinon 1 */
+int gestion_erreur_terrain(erreur_terrain e);
 
 /* Lecture d'un terrain dans un fichier f, ouvert en lecture
    Résultats :

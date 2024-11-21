@@ -87,13 +87,17 @@ int main(int argc, char **argv)
   fprintf(resFile, "%d\n", l);
   for (i = 1; i <= N; i++)
   {
+    // Crée des terrains tant qu'ils ne sont pas corrects
     do
     {
       generation_aleatoire(&T, l, h, dObst);
       terrains_generes++;
     } while (!existe_chemin_vers_sortie(&T));
 
+    // Ecriture du terrain dans le fichier
     ecrire_terrain(resFile, &T, l / 2, h / 2);
+
+    // Calcul des statistiques
     cases_occupees = nb_cases_occupees(&T);
     dObst_reelle = (float)cases_occupees / ((float)l * (float)h);
     densite_totale += dObst_reelle;
@@ -101,10 +105,10 @@ int main(int argc, char **argv)
     terrains_corrects_generes++;
   }
 
-  fprintf(resFile, "DENSITE_MOYENNE=%3.2f\n", densite_totale / N);
-  fprintf(resFile, "POURCENTAGE_TERRAINS_CORRECTS=%3.0f%%\n", 100 * ((float)terrains_corrects_generes / (float)terrains_generes));
+  // Affichage des statistiques
+  fprintf(resFile, "%3.2f\n", densite_totale / N);
+  fprintf(resFile, "%3.0f%%\n", 100 * ((float)terrains_corrects_generes / (float)terrains_generes));
 
-  // fermeture des fichiers
   fclose(resFile);
   return 0;
 }

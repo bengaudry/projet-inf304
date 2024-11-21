@@ -19,16 +19,17 @@ void generation_aleatoire(Terrain *T, int l, int h, float dObst)
   {
     for (j = 0; j < h; j++)
     {
+      // Laisser une case libre pour le robot au milieu du terrain
       if (i == l / 2 && j == h / 2)
         T->tab[i][j] = LIBRE;
       else
       {
-        taux = rand() % 101;
+        taux = rand() % 101; // Calcul d'un taux d'obstacle pour la génération aléatoire
         if (taux > dObst * 100 + 1)
           T->tab[i][j] = LIBRE;
         else
         {
-          type_obstacle = rand() % 2;
+          type_obstacle = rand() % 2; // Nombre aléatoire pour placer un obstacle aléatoire
           T->tab[i][j] = type_obstacle == 1 ? EAU : ROCHER;
         }
       }
@@ -36,7 +37,7 @@ void generation_aleatoire(Terrain *T, int l, int h, float dObst)
   }
 }
 
-// determine s'il existe un chemin du centre au bord du terrain T
+// Determine s'il existe un chemin du centre au bord du terrain T
 // version avec tableau annexe
 int existe_chemin_vers_sortie(Terrain *T)
 {
