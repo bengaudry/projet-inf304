@@ -32,10 +32,11 @@ int main(int argc, char **argv)
 
   /* Initialisation de l'état */
   init_etat(&etat);
+
+  // Exécution du programme sur le terrain
   do
   {
     res = exec_pas(&prog, &envt, &etat);
-    /* Affichage du terrain et du robot */
     afficher_envt(&envt);
   } while (res == OK_ROBOT);
 

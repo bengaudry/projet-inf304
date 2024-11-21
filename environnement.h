@@ -11,7 +11,9 @@ typedef struct
 {
   Robot r;
   Terrain t;
+  // Observateur vérifiant que l'on effectue une mesure avant d'avancer
   Obs1Etat etat_obs1;
+  // Observateur vérifiant que l'on ne tourne pas en rond
   Obs2Etat etat_obs2;
 } Environnement;
 

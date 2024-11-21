@@ -19,10 +19,9 @@ erreur_terrain initialise_environnement(Environnement *envt, char *fichier_terra
   errt = lire_terrain(f, &(envt->t), &x, &y);
 
   if (errt != OK)
-  {
     return errt;
-  }
 
+  // Initialisation du robot et des observateurs
   init_robot(&(envt->r), x, y, Est);
   envt->etat_obs1 = etat_initial_obs1();
   envt->etat_obs2 = etat_initial_obs2();
@@ -40,16 +39,10 @@ resultat_deplacement avancer_envt(Environnement *envt)
   // Récupérer la position devant le robot
   position_devant(&(envt->r), &x, &y);
 
-  if ((x < 0) || (x >= largeur(&envt->t)) || (y < 0) ||
-      (y >= hauteur(&envt->t)))
-  {
-    // Le robot est sorti
+  if ((x < 0) || (x >= largeur(&envt->t)) || (y < 0) || (y >= hauteur(&envt->t)))
     return SORTIE;
-  }
   else
   {
-    // À corriger : il devrait y avoir une fonction pour cela dans le
-    // paquetage terrain
     Case case_devant = envt->t.tab[x][y];
     switch (case_devant)
     {

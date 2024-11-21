@@ -31,6 +31,8 @@ int main(int argc, char **argv)
 
     /* Initialisation de l'état */
     init_etat(&etat_int);
+
+    // Exécution du programme sur le terrain
     do
     {
         afficher_envt(&envt);

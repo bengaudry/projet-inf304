@@ -8,16 +8,8 @@
 #include "interprete.h"
 #include "programme.h"
 
-//    fichier_programme est le fichier contenant le programme-robot évalué
-//    N est le nombre de terrains utilisés pour l'évaluation
-//    L, impair, la largeur des terrains
-//    H, impair, la hauteur des terrains
-//    d, la densité d'obstacles
-//    graine, la graine du générateur aléatoire
-//    nb_step_max, le nombre de pas maximum pour chaque exécution du programme sur un terrain
-//    fichier_res, le nom du fichier dans lequel seront écrits les résultats.
 
-
+// On définit une structure pour stocker les statistiques de génération de terrains
 typedef struct
 {
     int sortie;
@@ -27,6 +19,14 @@ typedef struct
     int total;
 } stats;
 
+//    fichier_programme est le fichier contenant le programme-robot évalué
+//    N est le nombre de terrains utilisés pour l'évaluation
+//    L, impair, la largeur des terrains
+//    H, impair, la hauteur des terrains
+//    d, la densité d'obstacles
+//    graine, la graine du générateur aléatoire
+//    nb_step_max, le nombre de pas maximum pour chaque exécution du programme sur un terrain
+//    fichier_res, le nom du fichier dans lequel seront écrits les résultats.
 
 int main(int argc, char **argv)
 {
@@ -46,6 +46,7 @@ int main(int argc, char **argv)
     etat_inter etat;
     resultat_inter res;
 
+    // Initialisation des statistiques
     s.sortie = 0;
     s.crash = 0;
     s.bloque = 0;
@@ -60,6 +61,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    // Récupération des informations pour la génération de terrains
     fichier_programme = argv[1];
     N = strtol(argv[2], NULL, 10);
     l = strtol(argv[3], NULL, 10);
@@ -70,7 +72,7 @@ int main(int argc, char **argv)
     fichier_res = argv[8];
 
 
-    // test de l et h
+    // Gestion d'erreurs sur les paramètres
     if (l > DIM_MAX || l % 2 == 0)
     {
         printf("Largeur incorrecte : doit être impaire et <= %d\n", DIM_MAX);
@@ -87,13 +89,19 @@ int main(int argc, char **argv)
         return 1;
     }
     
+    // Écriture du nombre de terrains dans le fichier resultats
     res_f = fopen(fichier_res, "w");
-    srand(getpid());
     fprintf(res_f, "%d\n", N);
 
+    // Initialisation de la seed
+    srand(seed);
+
+    // Initialisation des paramètres constants du terrain
     T.hauteur = h;
     T.largeur = l;
 
+
+    // Génération des terrains
     for (int i = 1; i <= N; i++)
     {
         printf("TERRAIN %d\n", i);
@@ -157,6 +165,7 @@ int main(int argc, char **argv)
         pas = 0;
     }
 
+    // Affichage des statistiques
     printf("\n");
 
     printf("==============   STATISTIQUES   ==============\n");

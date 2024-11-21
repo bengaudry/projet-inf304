@@ -43,11 +43,13 @@ void affiche_etat_inter(resultat_inter r) {
     }
 }
 
+/* Affiche une erreur d'exécution du test*/
 void affiche_erreur(char msg[], char nom_terrain[])
 {
     fprintf(stderr, " %s[-] %s%s%s\n%s\n", rouge, jaune, nom_terrain, normal, msg);
 }
 
+/* Convertir une orientation en un caractère correspondant*/
 char orientation_vers_char(Orientation o)
 {
     switch (o)
@@ -59,6 +61,10 @@ char orientation_vers_char(Orientation o)
     }
 }
 
+/* 
+ * Supprime le retour à la ligne à la fin d'une string.
+ * (Peut causer des bugs lors de l'ouverture de fichiers)
+*/
 void supprime_retour_ligne(char *str)
 {
     char *c;
@@ -136,6 +142,8 @@ int main(int argc, char **argv)
 
     /* Initialisation de l'état */
     init_etat(&etat);
+
+    // Exécution du programme
     pas = 0;
     do {
         res = exec_pas(&prog, &envt, &etat);
@@ -146,7 +154,7 @@ int main(int argc, char **argv)
         pas++;
     } while (res == OK_ROBOT && pas <= nb_pas_exec_max);
 
-    /* Affichage du résultat */
+    // Affichage du résultat
     evenement_fin = 'N';
     switch (res)
     {
