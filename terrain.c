@@ -65,9 +65,7 @@ erreur_terrain lire_terrain(FILE *f, Terrain *t, int *x, int *y)
   ry = -1;
 
   if (f == NULL)
-  {
     return ERREUR_FICHIER;
-  }
 
   // Lecture de la largeur
   if (fscanf(f, "%d", &l) == EOF)
