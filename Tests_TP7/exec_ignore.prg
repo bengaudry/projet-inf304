@@ -1,1 +1,0 @@
-{ AAGADA } { GADAAA } I !
