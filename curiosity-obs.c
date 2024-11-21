@@ -37,11 +37,18 @@ int main(int argc, char **argv)
         res = exec_pas(&prog, &envt, &etat_int);
     } while (res == OK_ROBOT);
 
-    if (!est_final(envt.etat_obs))
+    if (!obs1_est_final(envt.etat_obs1))
     {
-        fprintf(stderr, "Le programme n'est pas correct.\n");
+        fprintf(stderr, "Le programme n'est pas correct (avance sans mesurer).\n");
         return 1;
     }
+
+    if (!obs2_est_final(envt.etat_obs2))
+    {
+        fprintf(stderr, "Le programme n'est pas correct (tourne en rond).\n");
+        return 1;
+    }
+
     printf("Programme OK\n");
     return 0;
 }

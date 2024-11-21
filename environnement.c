@@ -24,7 +24,8 @@ erreur_terrain initialise_environnement(Environnement *envt, char *fichier_terra
   }
 
   init_robot(&(envt->r), x, y, Est);
-  envt->etat_obs = etat_initial_obs();
+  envt->etat_obs1 = etat_initial_obs1();
+  envt->etat_obs2 = etat_initial_obs2();
 
   return OK;
 }
@@ -33,7 +34,8 @@ resultat_deplacement avancer_envt(Environnement *envt)
 {
   int x, y; // Position devant le robot
 
-  envt->etat_obs = transition(envt->etat_obs, A);
+  envt->etat_obs1 = transition_obs1(envt->etat_obs1, A);
+  envt->etat_obs2 = transition_obs2(envt->etat_obs2, A);
 
   // Récupérer la position devant le robot
   position_devant(&(envt->r), &x, &y);
@@ -66,14 +68,16 @@ resultat_deplacement avancer_envt(Environnement *envt)
 /* Tourner le robot à gauche */
 void gauche_envt(Environnement *envt)
 {
-  envt->etat_obs = transition(envt->etat_obs, G);
+  envt->etat_obs1 = transition_obs1(envt->etat_obs1, G);
+  envt->etat_obs2 = transition_obs2(envt->etat_obs2, G);
   tourner_a_gauche(&(envt->r));
 }
 
 /* Tourner le robot à droite */
 void droite_envt(Environnement *envt)
 {
-  envt->etat_obs = transition(envt->etat_obs, D);
+  envt->etat_obs1 = transition_obs1(envt->etat_obs1, D);
+  envt->etat_obs2 = transition_obs2(envt->etat_obs2, D);
   tourner_a_droite(&(envt->r));
 }
 
@@ -100,7 +104,8 @@ int mesure_envt(Environnement *envt, int d)
   int dx, dy; // Direction du robot
   int mx, my; // Position de la mesure
 
-  envt->etat_obs = transition(envt->etat_obs, M);
+  envt->etat_obs1 = transition_obs1(envt->etat_obs1, M);
+  envt->etat_obs2 = transition_obs2(envt->etat_obs2, M);
 
   position(&(envt->r), &x, &y);
 

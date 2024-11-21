@@ -2,10 +2,10 @@
 #include <stdbool.h>
 
 /** Retourne l'état initial de l'automate */
-Etat etat_initial_obs(void) { return Init; }
+Obs1Etat etat_initial_obs1(void) { return Init; }
 
 /** Retourne l'état correspondant à la transition depuis un autre état */
-Etat transition(Etat e, Alphabet c)
+Obs1Etat transition_obs1(Obs1Etat e, Alphabet c)
 {
     switch (e)
     {
@@ -38,7 +38,49 @@ Etat transition(Etat e, Alphabet c)
 }
 
 /** Retourne vrai si Etat != Err */
-bool est_final(Etat e)
+bool obs1_est_final(Obs1Etat e)
 {
     return e != Err;
+}
+
+
+////// OBSERVATEUR 2 //////
+#include "observateur.h"
+#include <stdbool.h>
+
+/** Retourne l'état initial de l'automate */
+Obs2Etat etat_initial_obs2(void) { return D0; }
+
+/** Retourne l'état correspondant à la transition depuis un autre état */
+Obs2Etat transition_obs2(Obs2Etat e, Alphabet c)
+{
+    switch (c)
+    {
+        case D:
+            switch (e) {
+                case D0: return D1;
+                case D1: return D2;
+                case D2: return D3;
+                case D3: return DErr;
+                case DErr: return DErr;
+            }
+            break;
+        case A: case M:
+            return e;
+        case G:
+            switch (e) {
+                case D0: return D0;
+                case D1: return D0;
+                case D2: return D1;
+                case D3: return D2;
+                case DErr: return DErr;
+            }
+            break;
+    }
+}
+
+/** Retourne vrai si Etat != Err */
+bool obs2_est_final(Obs2Etat e)
+{
+    return e != DErr;
 }
