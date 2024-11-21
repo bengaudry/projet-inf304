@@ -1,5 +1,12 @@
 *.o
 main
-curiosity-test[0-9]
-curiosity-test
 Tests_TP7.tar.gz
+test_terrain
+curiosity-test[0-9]
+test_robot
+robot_terrain
+curiosity
+curiosity-test
+test_generation_terrains
+curiosity-perf
+curiosity-obs
