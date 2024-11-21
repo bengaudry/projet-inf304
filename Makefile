@@ -1,6 +1,6 @@
 CC=clang -Wall
 
-PROGRAMMES=test_terrain test_robot robot_terrain curiosity curiosity-test test_generation_terrains curiosity-perf
+PROGRAMMES=test_terrain test_robot robot_terrain curiosity curiosity-test test_generation_terrains curiosity-perf curiosity-obs
 
 all: $(PROGRAMMES)
 
@@ -45,6 +45,9 @@ test_generation_terrains.o: test_generation_terrains.c generation_terrains.h ter
 
 curiosity-perf.o: curiosity-perf.c terrain.h environnement.h programme.h interprete.h
 
+observateur.o: observateur.h observateur.c
+
+curiosity-obs.o: curiosity-obs.c programme.h environnement.h interprete.h terrain.h robot.h
 
 ######################################################################
 #                       Règles d'édition de liens                    #
@@ -59,22 +62,24 @@ test_robot: test_robot.o robot.o
 robot_terrain: robot_terrain.o terrain.o robot.o
 	$(CC) $^ -o $@
 
-curiosity: curiosity.o environnement.o programme.o interprete.o \
+curiosity: curiosity.o environnement.o observateur.o programme.o interprete.o \
 	robot.o terrain.o type_pile.o
 	$(CC) $^ -o $@
 
-curiosity-test: curiosity-test.o environnement.o programme.o interprete.o \
+curiosity-test: curiosity-test.o environnement.o observateur.o programme.o interprete.o \
 	robot.o terrain.o type_pile.o
 	$(CC) $^ -o $@
 
-curiosity-test%: curiosity-test.o environnement.o programme.o interprete%.o \
+curiosity-test%: curiosity-test.o environnement.o observateur.o programme.o interprete%.o \
 	robot.o terrain.o type_pile.o
 	$(CC) $^ -o $@
 
 test_generation_terrains: test_generation_terrains.c generation_terrains.o terrain.o
 	$(CC) $^ -o $@
 
-curiosity-perf: curiosity-perf.o robot.o generation_terrains.o terrain.o environnement.o programme.o interprete.o type_pile.o
+curiosity-perf: curiosity-perf.o robot.o generation_terrains.o terrain.o environnement.o observateur.o programme.o interprete.o type_pile.o
+
+curiosity-obs: curiosity-obs.o environnement.o programme.o observateur.o interprete.o terrain.o robot.o type_pile.o
 
 clean:
 	rm -f $(PROGRAMMES) curiosity-test0 curiosity-test1 curiosity-test2 curiosity-test3 curiosity-test4 curiosity-test5 curiosity-test6 curiosity-test7 curiosity-test8 curiosity-test9 *.o

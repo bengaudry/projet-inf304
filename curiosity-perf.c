@@ -8,43 +8,6 @@
 #include "interprete.h"
 #include "programme.h"
 
-void affichage_position_programme(erreur_programme e)
-{
-    int i;
-    printf("Ligne %d, colonne %d :\n", e.num_ligne, e.num_colonne);
-    printf("%s\n", e.ligne);
-    /* Impression de e.num_colonne-1 espaces */
-    for (i = 1; i < e.num_colonne; i++)
-    {
-        printf(" ");
-    }
-    /* Impression d'un curseur de position */
-    printf("^\n");
-}
-
-void gestion_erreur_programme(erreur_programme e)
-{
-    switch (e.type_err)
-    {
-    case OK_PROGRAMME:
-        break;
-    case ERREUR_FICHIER_PROGRAMME:
-        printf("Erreur lecture du programme : erreur d'ouverture du fichier\n");
-        exit(2);
-    case ERREUR_BLOC_NON_FERME:
-        printf("Erreur lecture du programme : bloc non fermé\n");
-        exit(2);
-    case ERREUR_FERMETURE_BLOC_EXCEDENTAIRE:
-        printf("Erreur lecture du programme : fermeture de bloc excédentaire\n");
-        affichage_position_programme(e);
-        exit(2);
-    case ERREUR_COMMANDE_INCORRECTE:
-        printf("Erreur lecture du programme : commande incorrecte\n");
-        affichage_position_programme(e);
-        exit(2);
-    }
-}
-
 //    fichier_programme est le fichier contenant le programme-robot évalué
 //    N est le nombre de terrains utilisés pour l'évaluation
 //    L, impair, la largeur des terrains

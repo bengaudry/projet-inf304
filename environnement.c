@@ -8,8 +8,8 @@
    - initialise le robot : coordonnées initiales lues dans le fichier
    terrain, orientation initiale vers l'est
 */
-erreur_terrain initialise_environnement(Environnement *envt,
-                                        char *fichier_terrain) {
+erreur_terrain initialise_environnement(Environnement *envt, char *fichier_terrain)
+{
   erreur_terrain errt;
   int x, y; // Position initiale du robot
   FILE *f;
@@ -18,30 +18,39 @@ erreur_terrain initialise_environnement(Environnement *envt,
 
   errt = lire_terrain(f, &(envt->t), &x, &y);
 
-  if (errt != OK) {
+  if (errt != OK)
+  {
     return errt;
   }
 
   init_robot(&(envt->r), x, y, Est);
+  envt->etat_obs = etat_initial_obs();
 
-  return errt;
+  return OK;
 }
 
-resultat_deplacement avancer_envt(Environnement *envt) {
+resultat_deplacement avancer_envt(Environnement *envt)
+{
   int x, y; // Position devant le robot
+
+  envt->etat_obs = transition(envt->etat_obs, A);
 
   // Récupérer la position devant le robot
   position_devant(&(envt->r), &x, &y);
 
   if ((x < 0) || (x >= largeur(&envt->t)) || (y < 0) ||
-      (y >= hauteur(&envt->t))) {
+      (y >= hauteur(&envt->t)))
+  {
     // Le robot est sorti
     return SORTIE;
-  } else {
+  }
+  else
+  {
     // À corriger : il devrait y avoir une fonction pour cela dans le
     // paquetage terrain
     Case case_devant = envt->t.tab[x][y];
-    switch (case_devant) {
+    switch (case_devant)
+    {
     case LIBRE:
       avancer(&(envt->r));
       return OK_DEPL;
@@ -55,10 +64,18 @@ resultat_deplacement avancer_envt(Environnement *envt) {
 }
 
 /* Tourner le robot à gauche */
-void gauche_envt(Environnement *envt) { tourner_a_gauche(&(envt->r)); }
+void gauche_envt(Environnement *envt)
+{
+  envt->etat_obs = transition(envt->etat_obs, G);
+  tourner_a_gauche(&(envt->r));
+}
 
 /* Tourner le robot à droite */
-void droite_envt(Environnement *envt) { tourner_a_droite(&(envt->r)); }
+void droite_envt(Environnement *envt)
+{
+  envt->etat_obs = transition(envt->etat_obs, D);
+  tourner_a_droite(&(envt->r));
+}
 
 /* Effectuer une mesure
    Paramètre d : la direction de la mesure
@@ -77,14 +94,18 @@ void droite_envt(Environnement *envt) { tourner_a_droite(&(envt->r)); }
      2 rocher
      3 erreur (valeur du paramètre incorrect)
  */
-int mesure_envt(Environnement *envt, int d) {
+int mesure_envt(Environnement *envt, int d)
+{
   int x, y;   // Position courante du robot
   int dx, dy; // Direction du robot
   int mx, my; // Position de la mesure
 
+  envt->etat_obs = transition(envt->etat_obs, M);
+
   position(&(envt->r), &x, &y);
 
-  switch (orient(&(envt->r))) {
+  switch (orient(&(envt->r)))
+  {
   case Nord:
     dx = 0;
     dy = -1;
@@ -103,7 +124,8 @@ int mesure_envt(Environnement *envt, int d) {
     break;
   }
 
-  switch (d) {
+  switch (d)
+  {
   case 0: // sur place
     mx = x;
     my = y;
@@ -146,7 +168,8 @@ int mesure_envt(Environnement *envt, int d) {
 
   // À corriger : il devrait y avoir une fonction dans le paquetage
   // terrain pour tester le type de case
-  switch (envt->t.tab[mx][my]) {
+  switch (envt->t.tab[mx][my])
+  {
   case LIBRE:
     return 0;
   case EAU:
@@ -159,7 +182,8 @@ int mesure_envt(Environnement *envt, int d) {
 }
 
 /* Afficher le terrain avec la position et l'orientation du robot */
-void afficher_envt(Environnement *envt) {
+void afficher_envt(Environnement *envt)
+{
   int i, j;
   int h, l;
   char c;
@@ -167,11 +191,15 @@ void afficher_envt(Environnement *envt) {
   h = hauteur(&envt->t);
   l = largeur(&envt->t);
 
-  for (j = 0; j < h; j++) {
-    for (i = 0; i < l; i++) {
-      if ((i == abscisse(&envt->r)) && (j == ordonnee(&envt->r))) {
+  for (j = 0; j < h; j++)
+  {
+    for (i = 0; i < l; i++)
+    {
+      if ((i == abscisse(&envt->r)) && (j == ordonnee(&envt->r)))
+      {
         // Afficher le robot selon son orientation
-        switch (orient(&envt->r)) {
+        switch (orient(&envt->r))
+        {
         case Nord:
           c = '^';
           break;
@@ -185,9 +213,12 @@ void afficher_envt(Environnement *envt) {
           c = '<';
           break;
         }
-      } else {
+      }
+      else
+      {
         // Afficher la case
-        switch (envt->t.tab[i][j]) {
+        switch (envt->t.tab[i][j])
+        {
         case LIBRE:
           c = '.';
           break;

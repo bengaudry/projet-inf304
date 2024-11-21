@@ -9,25 +9,33 @@ int affiche_erreur(erreur_terrain err)
   case ERREUR_FICHIER:
     fprintf(stderr, "ERREUR FICHIER");
     break;
-  case LARGEUR_INCORRECTE:
+  case ERREUR_LECTURE_LARGEUR:
+    fprintf(stderr, "ERREUR LECTURE LARGEUR");
+    break;
+  case ERREUR_LARGEUR_INCORRECTE:
     fprintf(stderr, "LARGEUR INCORRECTE");
     break;
-  case HAUTEUR_INCORRECTE:
+  case ERREUR_LECTURE_HAUTEUR:
+    fprintf(stderr, "ERREUR LECTURE HAUTEUR");
+    break;
+  case ERREUR_HAUTEUR_INCORRECTE:
     fprintf(stderr, "HAUTEUR INCORRECTE");
     break;
-  case LIGNE_MANQUANTE:
+  case ERREUR_LIGNES_MANQUANTES:
     fprintf(stderr, "LIGNE MANQUANTE");
     break;
-  case TAILLE_LIGNE_INCORRECTE:
-    fprintf(stderr, "TAILLE LIGNE INCORRECTE");
+  case ERREUR_LIGNE_TROP_LONGUE:
+    fprintf(stderr, "ERREUR LIGNE TROP LONGUE");
     break;
-  case POSITION_ROBOT_MANQUANTE:
+  case ERREUR_LIGNE_TROP_COURTE:
+    fprintf(stderr, "ERREUR LIGNE TROP COURTE");
+    break;
+  case ERREUR_POSITION_ROBOT_MANQUANTE:
     fprintf(stderr, "POSITION ROBOT MANQUANTE");
     break;
-  case CARACTERE_INCORRECT:
+  case ERREUR_CARACTERE_INCORRECT:
     fprintf(stderr, "CARACTERE INCORRECT");
     break;
-
   case OK:
     fprintf(stderr, "\033[00m\n");
     return 0;

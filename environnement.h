@@ -3,12 +3,15 @@
 
 #include "robot.h"
 #include "terrain.h"
+#include "observateur.h"
 
-/* Environnement : terrain + robot */
+/* Environnement : terrain + robot + observateur */
 
-typedef struct {
+typedef struct
+{
   Robot r;
   Terrain t;
+  Etat etat_obs;
 } Environnement;
 
 /* Initialise l'environnement envt :
@@ -16,11 +19,11 @@ typedef struct {
    - initialise le robot : coordonnées initiales lues dans le fichier
    terrain, orientation initiale vers l'est
 */
-erreur_terrain initialise_environnement(Environnement *envt,
-                                        char *fichier_terrain);
+erreur_terrain initialise_environnement(Environnement *envt, char *fichier_terrain);
 
 /* Résultat d'un déplacement de robot */
-typedef enum {
+typedef enum
+{
   OK_DEPL, /* Déplacement sur case libre */
   PLOUF,   /* Déplacement dans l'eau */
   CRASH,   /* Déplacement dans un rocher */

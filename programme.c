@@ -9,8 +9,46 @@
 // Renvoie vrai si c est un chiffre
 int est_chiffre(char c) { return (c >= '0') && (c <= '9'); }
 
+void affichage_position_programme(erreur_programme e)
+{
+  int i;
+  printf("Ligne %d, colonne %d :\n", e.num_ligne, e.num_colonne);
+  printf("%s\n", e.ligne);
+  /* Impression de e.num_colonne-1 espaces */
+  for (i = 1; i < e.num_colonne; i++)
+  {
+    printf(" ");
+  }
+  /* Impression d'un curseur de position */
+  printf("^\n");
+}
+
+void gestion_erreur_programme(erreur_programme e)
+{
+  switch (e.type_err)
+  {
+  case OK_PROGRAMME:
+    break;
+  case ERREUR_FICHIER_PROGRAMME:
+    printf("Erreur lecture du programme : erreur d'ouverture du fichier\n");
+    exit(2);
+  case ERREUR_BLOC_NON_FERME:
+    printf("Erreur lecture du programme : bloc non fermé\n");
+    exit(2);
+  case ERREUR_FERMETURE_BLOC_EXCEDENTAIRE:
+    printf("Erreur lecture du programme : fermeture de bloc excédentaire\n");
+    affichage_position_programme(e);
+    exit(2);
+  case ERREUR_COMMANDE_INCORRECTE:
+    printf("Erreur lecture du programme : commande incorrecte\n");
+    affichage_position_programme(e);
+    exit(2);
+  }
+}
+
 /* Lecture d'un programme prog dans le fichier nom_fichier */
-erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
+erreur_programme lire_programme(Programme *prog, char *nom_fichier)
+{
   FILE *fprog;
   char ligne[LGMAX];
   int numligne;
@@ -19,7 +57,8 @@ erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
 
   // Ouverture du fichier en lecture
   fprog = fopen(nom_fichier, "r");
-  if (fprog == NULL) {
+  if (fprog == NULL)
+  {
     res.type_err = ERREUR_FICHIER_PROGRAMME;
     return res;
   }
@@ -31,15 +70,18 @@ erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
   creer_pile(&pile);
 
   numligne = 0;
-  while ((!feof(fprog)) && (fgets(ligne, LGMAX, fprog) != NULL)) {
+  while ((!feof(fprog)) && (fgets(ligne, LGMAX, fprog) != NULL))
+  {
     int i;
     int nb;
     int lgligne;
 
     numligne++;
     i = 0;
-    while ((i < LGMAX) && (ligne[i] != '\0') && (ligne[i] != '#')) {
-      switch (ligne[i]) {
+    while ((i < LGMAX) && (ligne[i] != '\0') && (ligne[i] != '#'))
+    {
+      switch (ligne[i])
+      {
       case ' ':
       case '\t':
       case '\n':
@@ -80,7 +122,8 @@ erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
         break;
       case '}':
         // Dépiler la position du début de bloc correspondant
-        if (est_vide(&pile)) {
+        if (est_vide(&pile))
+        {
           // Erreur : fermeture de bloc exccédentaire
           res.type_err = ERREUR_FERMETURE_BLOC_EXCEDENTAIRE;
           lgligne = strlen(ligne);
@@ -89,7 +132,9 @@ erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
           res.num_ligne = numligne;
           res.num_colonne = i + 1;
           return res;
-        } else {
+        }
+        else
+        {
           int debut = depiler(&pile);
           // Lier le début du bloc avec la fin
           prog->tab[debut].aux = prog->lg;
@@ -130,17 +175,21 @@ erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
         break;
       case '-':
         i++;
-        if ((i < LGMAX) && est_chiffre(ligne[i])) {
+        if ((i < LGMAX) && est_chiffre(ligne[i]))
+        {
           // lire un nombre à partir de la position i
           nb = 0;
-          while ((i < LGMAX) && est_chiffre(ligne[i])) {
+          while ((i < LGMAX) && est_chiffre(ligne[i]))
+          {
             nb = 10 * nb + (ligne[i] - '0');
             i++;
           }
           prog->tab[prog->lg].cmd = EmpilerNb;
           prog->tab[prog->lg].aux = nb;
           prog->lg++;
-        } else {
+        }
+        else
+        {
           prog->tab[prog->lg].cmd = Sub;
           prog->lg++;
         }
@@ -166,17 +215,21 @@ erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
         i++;
         break;
       default:
-        if (est_chiffre(ligne[i])) {
+        if (est_chiffre(ligne[i]))
+        {
           // lire un nombre à partir de la position i
           nb = 0;
-          while ((i < LGMAX) && est_chiffre(ligne[i])) {
+          while ((i < LGMAX) && est_chiffre(ligne[i]))
+          {
             nb = 10 * nb + (ligne[i] - '0');
             i++;
           }
           prog->tab[prog->lg].cmd = EmpilerNb;
           prog->tab[prog->lg].aux = nb;
           prog->lg++;
-        } else {
+        }
+        else
+        {
           // Erreur : caractère incorrect à la position courante
           res.type_err = ERREUR_COMMANDE_INCORRECTE;
           lgligne = strlen(ligne);
@@ -193,9 +246,12 @@ erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
   fclose(fprog);
 
   // Fin du fichier : la pile doit être vide
-  if (est_vide(&pile)) {
+  if (est_vide(&pile))
+  {
     res.type_err = OK_PROGRAMME;
-  } else {
+  }
+  else
+  {
     res.type_err = ERREUR_BLOC_NON_FERME;
   }
 

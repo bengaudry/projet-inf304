@@ -4,6 +4,45 @@
 #include <stdio.h>
 #include <string.h>
 
+void gestion_erreur_terrain(erreur_terrain e)
+{
+  switch (e)
+  {
+  case OK:
+    break;
+  case ERREUR_FICHIER:
+    fprintf(stderr, "ERREUR FICHIER\n");
+    break;
+  case ERREUR_LECTURE_LARGEUR:
+    fprintf(stderr, "ERREUR LECTURE LARGEUR\n");
+    break;
+  case ERREUR_LARGEUR_INCORRECTE:
+    fprintf(stderr, "ERREUR LARGEUR INCORRECTE\n");
+    break;
+  case ERREUR_LECTURE_HAUTEUR:
+    fprintf(stderr, "ERREUR LECTURE HAUTEUR\n");
+    break;
+  case ERREUR_HAUTEUR_INCORRECTE:
+    fprintf(stderr, "ERREUR HAUTEUR INCORRECTE\n");
+    break;
+  case ERREUR_LIGNES_MANQUANTES:
+    fprintf(stderr, "ERREUR LIGNES MANQUANTES\n");
+    break;
+  case ERREUR_LIGNE_TROP_LONGUE:
+    fprintf(stderr, "ERREUR LIGNE TROP COURTE\n");
+    break;
+  case ERREUR_LIGNE_TROP_COURTE:
+    fprintf(stderr, "ERREUR LIGNE TROP COURTE\n");
+    break;
+  case ERREUR_POSITION_ROBOT_MANQUANTE:
+    fprintf(stderr, "ERREUR POSITION ROBOT MANQUANTE\n");
+    break;
+  case ERREUR_CARACTERE_INCORRECT:
+    fprintf(stderr, "ERREUR CARACTERE INCORRECT\n");
+    break;
+  }
+}
+
 /* Convertit une Case en le caractère qui la représente */
 char convertir_type_case_char(Case case_parcourue)
 {
