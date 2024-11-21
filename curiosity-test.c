@@ -16,30 +16,30 @@ char vert[] = "\033[0;32m";
 void affiche_etat_inter(resultat_inter r) {
     switch (r)
     {
-    case OK_ROBOT:
-        printf("OK ROBOT\n");
-        break;
-    case SORTIE_ROBOT:
-        printf("SORTIE ROBOT\n");
-        break;
-    case ARRET_ROBOT:
-        printf("ARRET ROBOT\n");
-        break;
-    case PLOUF_ROBOT:
-        printf("PLOUF ROBOT\n");
-        break;
-    case CRASH_ROBOT:
-        printf("CRASH ROBOT\n");
-        break;
-    case ERREUR_PILE_VIDE:
-        printf("ERREUR PILE VIDE\n");
-        break;
-    case ERREUR_ADRESSAGE:
-        printf("ERREUR ADRESSAGE\n");
-        break;
-    case ERREUR_DIVISION_PAR_ZERO:
-        printf("ERREUR DIVISION PAR ZERO\n");
-        break;
+        case OK_ROBOT:
+            printf("OK ROBOT\n");
+            break;
+        case SORTIE_ROBOT:
+            printf("SORTIE ROBOT\n");
+            break;
+        case ARRET_ROBOT:
+            printf("ARRET ROBOT\n");
+            break;
+        case PLOUF_ROBOT:
+            printf("PLOUF ROBOT\n");
+            break;
+        case CRASH_ROBOT:
+            printf("CRASH ROBOT\n");
+            break;
+        case ERREUR_PILE_VIDE:
+            printf("ERREUR PILE VIDE\n");
+            break;
+        case ERREUR_ADRESSAGE:
+            printf("ERREUR ADRESSAGE\n");
+            break;
+        case ERREUR_DIVISION_PAR_ZERO:
+            printf("ERREUR DIVISION PAR ZERO\n");
+            break;
     }
 }
 
@@ -59,6 +59,14 @@ char orientation_vers_char(Orientation o)
     }
 }
 
+void supprime_retour_ligne(char *str)
+{
+    char *c;
+    
+    c = strchr(str, '\n');
+    if (c != NULL) { *c = '\0'; }
+}
+
 int main(int argc, char **argv)
 {
     FILE *f;
@@ -70,9 +78,8 @@ int main(int argc, char **argv)
     etat_inter etat;
     resultat_inter res;
 
-    int pas;
+    int pas = 0;
 
-    char *c;
     char *nom_test;
     char chemin_fichier_terrain[255], chemin_fichier_prog[255];
     int nb_pas_exec_max = 0;
@@ -97,19 +104,19 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    // Récuperer le nom du fichier contenant le terrain
     fgets(chemin_fichier_terrain, 255, f);
-    // Supprime le retour à la ligne à la fin du chemin
-    if ((c = strchr(chemin_fichier_terrain, '\n')) != NULL)
-        *c = '\0';
+    supprime_retour_ligne(chemin_fichier_terrain);
 
+    // Récuperer le nom du fichier contenant le programme
     fgets(chemin_fichier_prog, 255, f);
-    // Supprime le retour à la ligne à la fin du chemin
-    if ((c = strchr(chemin_fichier_prog, '\n')) != NULL)
-        *c = '\0';
+    supprime_retour_ligne(chemin_fichier_prog);
 
+    // Récupérer les informations pour le test
     fscanf(f, "%d\n", &nb_pas_exec_max);
     fscanf(f, "%c\n", &evenement_attendu_fin);
 
+    // Lire la position et l'orientation finale si nécessaire
     if (evenement_attendu_fin == 'N' || evenement_attendu_fin == 'F')
     {
         fscanf(f, "%d %d\n", &x_final, &y_final);
@@ -172,6 +179,8 @@ int main(int argc, char **argv)
         break;
     }
 
+    /// Gestion des erreurs ///
+
     if (pas > nb_pas_exec_max)
     {
         affiche_erreur("Le nombre de pas d'éxécution maximum à été atteint", nom_test);
@@ -201,6 +210,5 @@ int main(int argc, char **argv)
         }
     }
     printf(" %s[+] %s%s%s\n", vert, jaune, nom_test, normal);
-
     return 0;
 }
