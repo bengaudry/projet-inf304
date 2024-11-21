@@ -153,7 +153,7 @@ void ecrire_terrain(FILE *f, Terrain *t, int x, int y)
 
   l = largeur(t);
   h = hauteur(t);
-  fprintf(f, "%d\n%d\n", l, h);
+  // fprintf(f, "%d\n%d\n", l, h);
 
   for (i = 0; i < h; i++)
   {

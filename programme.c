@@ -190,6 +190,8 @@ erreur_programme lire_programme(Programme *prog, char *nom_fichier) {
     }
   }
 
+  fclose(fprog);
+
   // Fin du fichier : la pile doit être vide
   if (est_vide(&pile)) {
     res.type_err = OK_PROGRAMME;
