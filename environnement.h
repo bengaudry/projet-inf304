@@ -11,7 +11,8 @@ typedef struct
 {
   Robot r;
   Terrain t;
-  Etat etat_obs;
+  Obs1Etat etat_obs1;
+  Obs2Etat etat_obs2;
 } Environnement;
 
 /* Initialise l'environnement envt :
