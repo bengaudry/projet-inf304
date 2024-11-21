@@ -45,8 +45,6 @@ bool obs1_est_final(Obs1Etat e)
 
 
 ////// OBSERVATEUR 2 //////
-#include "observateur.h"
-#include <stdbool.h>
 
 /** Retourne l'état initial de l'automate */
 Obs2Etat etat_initial_obs2(void) { return D0; }
