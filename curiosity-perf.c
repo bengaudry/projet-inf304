@@ -129,7 +129,6 @@ int main(int argc, char **argv)
         {
             res = exec_pas(&prog, &envt, &etat);
             pas++;
-            s.pas_total++;
             /* Affichage du terrain et du robot */
             afficher_envt(&envt);
             printf("%d\n", pas);
@@ -141,25 +140,19 @@ int main(int argc, char **argv)
         case SORTIE_ROBOT:
             fprintf(res_f, "%d\n", pas);
             s.sortie++;
-            break;
-        case OK_ROBOT: case ARRET_ROBOT:
-            printf("\033[0;31mARRET\033[0m\n");
-            fprintf(res_f, "-1\n");
-            s.bloque++;
+            s.pas_total += pas;
             break;
         case PLOUF_ROBOT:
-            printf("\033[0;31mCRASH\033[0m\n");
             fprintf(res_f, "-2\n");
             s.crash++;
             break;
         case CRASH_ROBOT:
-            printf("\033[0;31mCRASH\033[0m\n");
             fprintf(res_f, "-3\n");
             s.crash++;
             break;
         default:
-            printf("\033[0;31mFAIL %d\033[0m\n", res);
-            fprintf(res_f, "-4 : %d\n", res);
+            fprintf(res_f, "-1 : %d\n", res);
+            s.bloque++;
             break;
         }
         pas = 0;
@@ -173,7 +166,7 @@ int main(int argc, char **argv)
     printf(" - Robot obstacle         %d/%d terrains (%3.0f%%)\n", s.crash, N, ((float)s.crash/(float)N*100));
     printf(" - Robot bloqué           %d/%d terrains (%3.0f%%)\n", s.bloque, N, ((float)s.bloque/(float)N*100));
     printf("\n");
-    printf("Pas moyen : %3.1f\n", (float)s.pas_total / (float)N);
+    printf("Pas moyen : %3.1f\n", (float)s.pas_total / (float)s.sortie);
     printf("pid: %d\n", getpid());
     printf("==============================================\n");
 
